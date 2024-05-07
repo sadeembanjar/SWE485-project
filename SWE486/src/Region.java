@@ -2,27 +2,57 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Region {
+public class Region  {
 String code ; 
 String [] Pcolors;
 Region [] Adjacents;
 String MyColor;
 boolean isColorSet = false ; 
 boolean hasAdj = false ; 
+boolean isVIsited=false;
 
 
 public Region (String [] c , String code){
 this.code = code ;
 Pcolors= c;
 }
+public Region(Region other ) {
+    this.code = other.code;
+    if (other.Pcolors != null) {
+        this.Pcolors = Arrays.copyOf(other.Pcolors, other.Pcolors.length);
+    }
+    this.MyColor = other.MyColor;
+    this.isColorSet = other.isColorSet;
+    this.hasAdj = other.hasAdj;
+    this.isVIsited = other.isVIsited;
 
-
+    
+}
+public void setadad(Region other , Region[] newRegions){
+    if (other.Adjacents != null) {
+        this.Adjacents = new Region[other.Adjacents.length];
+        for (int i = 0; i < other.Adjacents.length; i++) {
+            this.Adjacents[i] = findRegionByCode(other.Adjacents[i].code, newRegions);
+        }
+        this.hasAdj = (other.Adjacents.length > 0);
+    }
+}
+// Utility method to find a region by code in an array of regions
+private Region findRegionByCode(String code, Region[] regions) {
+    for (Region region : regions) {
+        if (region.code.equals(code)) {
+            return region;
+        }
+    }
+    return null; // Consider what to do if no match is found
+}
 public void setAdjacents(Region [] ad){
 
 this.Adjacents =ad;
  this.hasAdj = true ; 
 
 }
+
 
 public void setMyColor(){
 for (int i=0 ; i<Pcolors.length;i++){
@@ -84,6 +114,24 @@ public String toString() {
     }
     return true;
 }
+
+  public int checkConflicts() {
+        int conflicts=0;
+   
+        if(this.hasAdj)
+       { 
+        for (int i = 0; i < Adjacents.length; i++) {
+          
+            if (Adjacents[i].MyColor.equals(this.MyColor)) {
+                conflicts++;
+                
+            }
+        }
+           
+        return conflicts;}else {
+ 
+            return 0 ; }
+    }
 
 }
 

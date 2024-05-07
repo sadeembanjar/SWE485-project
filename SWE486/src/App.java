@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) throws Exception {
         //take inputs from the user
-        System.out.println("Welcome to Search algorithm with Incremental Formulation for map coloring!");
+        System.out.println("Welcome to Search algorithm for map coloring!");
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter the number of regions: ");
@@ -41,8 +41,16 @@ public class App {
         }
 
         scanner.close();
-
-        //timer
+        //  timer
+        long GAstartTime = System.nanoTime();
+        GeneticAlgorithm GA = new GeneticAlgorithm( NumRegions , colors , Regions);
+        long GAendTime = System.nanoTime();
+        long GAduration = (GAendTime - GAstartTime);  
+        System.out.println("Computational time in milliseconds: " + GAduration / 1_000_000);
+        
+        
+        ////////////  Search algorithm with Forward Checking
+        // timer
         long startTime = System.nanoTime();
 
         boolean allSet = true;
